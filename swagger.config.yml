@@ -1,0 +1,10 @@
+swagger:
+  outputDirectory: ./dist
+  entryFile: 
+    - ./src/controllers/*
+  outputFormat: OpenApi_3
+  name: crypto-arbitrage-service
+  description: Bilocus Crypto arbitrage service
+  license: MIT
+  produces: [application/json]
+  version: 1.0
