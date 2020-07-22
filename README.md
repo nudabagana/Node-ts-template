@@ -1,5 +1,5 @@
 # Node Typescript template
-> Nodejs, typescript, eslint, typeORM, typescript-rest, typescript-rest-swagger, auth boilerplate code
+Nodejs, typescript, eslint, typeORM, typescript-rest, typescript-rest-swagger, auth boilerplate code
 
 ## Getting started
 
