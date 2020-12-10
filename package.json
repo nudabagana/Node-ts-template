@@ -34,7 +34,7 @@
 		"pino-pretty": "^4.0.0",
 		"reflect-metadata": "^0.1.13",
 		"source-map-support": "^0.5.16",
-		"typeorm": "^0.2.24",
+		"typeorm": "^0.2.29",
 		"typescript-rest": "^3.0.1",
 		"typescript-rest-swagger": "^1.1.1",
 		"uuid": "7.0.3"
