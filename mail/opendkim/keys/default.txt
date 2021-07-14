@@ -1,0 +1,3 @@
+default._domainkey	IN	TXT	( "v=DKIM1; k=rsa; "
+	  "p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAweZ5XhQRk+S9u0hc8DysRXYsEI36O11D79m4bMneKaeNs9j3Mg8lnaU8a4q2ysM1gwYfoC1GzhLAEyK71BdYg/x+jZXnc1yEIBzup3v7jB+NaUdTnT6SrEV9eLwK0FU+pzugaOUuRvEfmlB2TAJhAVrA5mJvP/k0qHYn0EqHvs3Tq+CH+1l2PkUkuYGnLdhygSN60pfc2+rTQO"
+	  "mY8P8OkyYj+1t/GgR7OU4zVW7RagAJUC41Lr5SOcG5EOZkDj80VrLIbmi8iHBLH80OYIBehwUc7FiVPn7P94ofrGe2kQZCOP3iJifyErK8i2uM2tIxHWdsJt85lcn0UeJyUOUrOwIDAQAB" )  ; ----- DKIM key default for l2hestia.com

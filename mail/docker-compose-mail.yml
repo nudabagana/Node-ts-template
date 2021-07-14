@@ -1,0 +1,7 @@
+version: "3"
+services:
+  mail-server:
+    image: mail-service:latest
+    ports:
+    - "25:25"
+    restart: on-failure

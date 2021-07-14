@@ -5,23 +5,32 @@ import {
 	PrimaryGeneratedColumn,
 } from 'typeorm';
 
-export interface IUser {
+export interface IWebUser {
 	username: string;
 	password: string;
 	authorized: boolean;
+	email: string;
+	suspended: boolean;
+	admin: boolean;
 }
 
 @Entity()
-export class User implements IUser {
+export class WebUser implements IWebUser {
 	@PrimaryGeneratedColumn()
 	id: number;
 
-	@Column()
+	@Column({ unique: true })
 	username: string;
 	@Column()
 	password: string;
 	@Column()
 	authorized: boolean;
+	@Column({ unique: true })
+	email: string;
+	@Column()
+	suspended: boolean;
+	@Column()
+	admin: boolean;
 
 	@CreateDateColumn({ type: 'timestamptz' })
 	createdAt: Date;

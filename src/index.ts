@@ -7,8 +7,14 @@ import * as os from 'os';
 import 'reflect-metadata';
 import { Server } from 'typescript-rest';
 import { HttpError } from 'typescript-rest/dist/server/model/errors';
+import sessionCache from './auth/sessionCache';
 import { dbConnect, dbDisconnect } from './dbConnection';
 import { logger } from './logger';
+import * as rateLimit from 'express-rate-limit';
+import verificationCodes from './auth/verificationCodes';
+import passwordResetLinks from './auth/passwordResetLinks';
+import { rateLimiters } from './rateLimit';
+
 require('dotenv').config();
 
 const PORT = Number(process.env.PORT) || 8200;
@@ -23,9 +29,14 @@ const bootloader = async () => {
 	app.use(
 		morgan(`:method :url :status :response-time\\ms`, {
 			stream: loggerStream,
+			skip: (req, res) => res.statusCode < 400,
 		}),
 	);
 	app.use(cors());
+
+	rateLimiters.forEach(({ path, options }) =>
+		app.use(path, rateLimit(options)),
+	);
 
 	Server.loadServices(app, 'controllers/*', __dirname);
 	Server.swagger(app, { filePath: './dist/swagger.json', endpoint: 'docs' });
@@ -34,6 +45,9 @@ const bootloader = async () => {
 
 	const server = createServer(app);
 	await dbConnect();
+	await sessionCache.init();
+	verificationCodes.start();
+	passwordResetLinks.start();
 
 	createTerminus(server, {
 		healthChecks: {
@@ -42,7 +56,12 @@ const bootloader = async () => {
 		signals: ['SIGTERM', 'SIGINT'],
 		onSignal: () => {
 			logger.info(`closing gracefully`);
-			return Promise.all([dbDisconnect()]);
+			return Promise.all([
+				passwordResetLinks.stop(),
+				verificationCodes.stop(),
+				sessionCache.cleanup(),
+				dbDisconnect(),
+			]);
 		},
 	});
 

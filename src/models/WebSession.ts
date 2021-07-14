@@ -5,14 +5,14 @@ import {
 	PrimaryGeneratedColumn,
 } from 'typeorm';
 
-export interface ISession {
+export interface IWebSession {
 	token: string;
 	userId: number;
 	expires: number;
 }
 
 @Entity()
-export class Session implements ISession {
+export class WebSession implements IWebSession {
 	@PrimaryGeneratedColumn()
 	id: number;
 
@@ -20,7 +20,7 @@ export class Session implements ISession {
 	token: string;
 	@Column()
 	userId: number;
-	@Column({type: 'int8'})
+	@Column({ type: 'int8' })
 	expires: number;
 
 	@CreateDateColumn({ type: 'timestamptz' })

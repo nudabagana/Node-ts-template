@@ -1,0 +1,42 @@
+version: "3"
+services:
+  postgres:
+    image: postgres:10.6
+    environment:
+    - POSTGRES_PASSWORD=${DB_PASSWORD}
+    - POSTGRES_USER=${DB_USER}
+    ports:
+    - "5432:5432"
+    volumes:
+    - ./.db_data:/var/lib/postgresql/data
+    - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+  node-server:
+    depends_on:
+      - postgres
+    image: hestia-backend:latest
+    network_mode: "host"
+    environment:
+      - NODE_ENV=production
+      - PORT=${PORT}
+      - DB_HOST=localhost
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_USER=${DB_USER}
+      - LOCAL_IP=${LOCAL_IP}
+    restart: on-failure
+  mail-server:
+    image: mail-service:latest
+    ports:
+    - "25:25"
+    restart: on-failure
+  db-backup:
+    depends_on:
+      - postgres
+    image: db_backup:latest 
+    environment:
+      - PGPASSWORD=${DB_PASSWORD}
+      - PGUSER=${DB_USER}
+      - PGDATABASE=servicedb
+      - PGHOST=${LOCAL_IP}
+    volumes:
+      - ${BACKUP_VOLUME}:/etc/backups/dumps
+  

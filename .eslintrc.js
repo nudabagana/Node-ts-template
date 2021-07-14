@@ -23,5 +23,10 @@ module.exports = {
 		'@typescript-eslint/no-use-before-define': 'off',
 		'consistent-return': 'off',
 		'import/order': 'off',
+		'lines-between-class-members': 'off',
+		'operator-linebreak': 'off',
+		'max-classes-per-file': 'off',
+		'implicit-arrow-linebreak': 'off',
+		'function-paren-newline': 'off',
 	},
 };

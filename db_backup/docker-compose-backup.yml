@@ -1,0 +1,11 @@
+version: "3"
+services:
+  db-backup:
+    image: db_backup:latest 
+    environment:
+      - PGPASSWORD=${DB_PASSWORD}
+      - PGUSER=${DB_USER}
+      - PGDATABASE=servicedb
+      - PGHOST=${LOCAL_IP}
+    volumes:
+      - ${BACKUP_VOLUME}:/etc/backups/dumps

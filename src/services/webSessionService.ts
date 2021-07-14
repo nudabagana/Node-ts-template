@@ -1,8 +1,8 @@
 import { LessThan } from 'typeorm';
 import { getConnection } from '../dbConnection';
-import { ISession, Session } from '../models/Session';
+import { IWebSession, WebSession } from '../models/WebSession';
 
-const getRepo = async () => (await getConnection()).getRepository(Session);
+const getRepo = async () => (await getConnection()).getRepository(WebSession);
 
 const getAll = async () => {
 	const repo = await getRepo();
@@ -14,7 +14,7 @@ const getByToken = async (token: string) => {
 	return repo.findOne({ token });
 };
 
-const add = async (item: ISession) => {
+const add = async (item: IWebSession) => {
 	const repo = await getRepo();
 	await repo.save(item);
 
@@ -28,4 +28,16 @@ const deleteExpired = async (timeMs: number) => {
 	return true;
 };
 
-export default { getAll, getById: getByToken, add, deleteExpired };
+const removeByUserId = async (userId: number) => {
+	const repo = await getRepo();
+	const item = await repo.findOne({ userId });
+	if (item) {
+		await repo.remove(item);
+	} else {
+		throw new Error('No entity found');
+	}
+
+	return true;
+};
+
+export default { getAll, getByToken, add, deleteExpired, removeByUserId };

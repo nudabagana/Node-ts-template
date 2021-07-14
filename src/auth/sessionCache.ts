@@ -1,19 +1,20 @@
-import { ISession } from '../models/Session';
-import SessionService from '../services/SessionService';
+import { IWebSession } from '../models/WebSession';
+import SessionService from '../services/webSessionService';
 import { v4 } from 'uuid';
 
 const EXPIRE_AFTER_MS = 24 * 60 * 60 * 1000;
 const CLEAR_EXPIRED_EVERY_N_MS = 60 * 60 * 1000;
 
 interface ISessionsMap {
-	[token: string]: ISession;
+	[token: string]: IWebSession;
 }
 
 let interval: NodeJS.Timeout | null = null;
 
 let sessionsMap: ISessionsMap = {};
 
-const getSession = (token: string): ISession | undefined => sessionsMap[token];
+const getSession = (token: string): IWebSession | undefined =>
+	sessionsMap[token];
 
 const init = async () => {
 	const allSessions = await SessionService.getAll();
@@ -26,14 +27,18 @@ const init = async () => {
 };
 
 const newSession = async (userId: number) => {
-	const session: ISession = {
+	const session: IWebSession = {
 		userId,
 		expires: new Date().getTime() + EXPIRE_AFTER_MS,
 		token: v4(),
 	};
 	sessionsMap[session.token] = session;
-    await SessionService.add(session);
-    return session;
+	await SessionService.add(session);
+	return session;
+};
+
+const removeSession = (token: string) => {
+	delete sessionsMap[token];
 };
 
 const clearExpired = async () => {
@@ -57,6 +62,7 @@ const cleanup = async () => {
 export default {
 	getSession,
 	newSession,
+	removeSession,
 	init,
 	cleanup,
 };

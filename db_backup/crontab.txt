@@ -1,0 +1,1 @@
+0   3   *   *   *   pg_dump -Fc -t 'web_user' > /etc/backups/dumps/servicedb_$(date +"%Y_%m_%d_%H_%M").sql.dump > /dev/stdout
