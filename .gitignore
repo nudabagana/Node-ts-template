@@ -3,3 +3,4 @@
 dist
 yarn-error.log
 /.vscode
+.db_data
